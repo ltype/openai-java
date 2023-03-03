@@ -1,8 +1,12 @@
 package example;
 
+import com.theokanning.openai.chat.ChatCompletionRequest;
+import com.theokanning.openai.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.image.CreateImageRequest;
+
+import java.util.Arrays;
 
 class OpenAiApiExample {
     public static void main(String... args) {
@@ -18,6 +22,20 @@ class OpenAiApiExample {
                 .n(3)
                 .build();
         service.createCompletion(completionRequest).getChoices().forEach(System.out::println);
+
+
+        System.out.println("\nCreating chat completion...");
+        ChatMessage message = ChatMessage.builder()
+                .role("user")
+                .content("Hello!")
+                .build();
+        ChatCompletionRequest chatcompletionRequest = ChatCompletionRequest.builder()
+                .model("gpt-3.5-turbo")
+                .messages(Arrays.asList(message))
+                .n(5)
+                .user("testing")
+                .build();
+        service.createChatCompletion(chatcompletionRequest).getChoices().forEach(System.out::println);
 
         System.out.println("\nCreating Image...");
         CreateImageRequest request = CreateImageRequest.builder()
